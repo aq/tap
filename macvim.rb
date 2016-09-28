@@ -40,22 +40,25 @@ class Macvim < Formula
     # If building for OS X 10.7 or up, make sure that CC is set to "clang"
     ENV.clang if MacOS.version >= :lion
 
-    # ruby version active
-    ruby_path = `which -a ruby | grep "/ruby" | head -n1`
-    puts ruby_path
-
     args = %W[
       --with-features=huge
       --enable-multibyte
       --with-macarchs=#{MacOS.preferred_arch}
       --enable-perlinterp
       --enable-rubyinterp
-      --with-ruby-command=#{ruby_path}
       --enable-tclinterp
       --with-tlib=ncurses
       --with-compiledby=Homebrew
       --with-local-dir=#{HOMEBREW_PREFIX}
     ]
+
+    # ruby version active
+    ruby_path = `which -a ruby | grep "/ruby" | head -n1`
+    raise "#{ENV.inspect}\n#{`whoami`}"
+
+    if !ENV['custom_ruby_path'].empty?
+      args << "--with-ruby-command=#{ENV['custom_ruby_path']}"
+    end
 
     args << "--enable-cscope" if build.with? "cscope"
 
