@@ -42,6 +42,7 @@ class Macvim < Formula
 
     # ruby version active
     ruby_path = `which -a ruby | grep "/ruby" | head -n1`
+    puts ruby_path
 
     args = %W[
       --with-features=huge
